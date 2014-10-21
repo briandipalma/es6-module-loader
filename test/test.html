@@ -3,23 +3,27 @@
 
   <body></body>
 
+  <script src="test.js"></script>
+
+  <!-- set this to the path to traceur.js -->
+  <script src="../node_modules/traceur/bin/traceur.js"></script>
+
   <script>
-    // test promise polyfills
-    window.Promise = null;
+    // test promise polyfill
+    // delete window.Promise;
   </script>
 
-  <!-- <script src="promise-0.1.1.js"></script> -->
+  <script src="../node_modules/when/es6-shim/Promise.js"></script>
 
-  <script src="test.js"></script>
-  <script src="../lib/es6-module-loader.js" data-init="runTests"></script>
+  <script src="../dist/es6-module-loader.js"></script>
 
-  <script type="module" name="named-module">
-    class q {
-      constructor() {
-        this.p = 'hi';
-      }
-    }
-    export var p = new q().p;
+  <script>
+    // test tracing
+    System.trace = true;
+  </script>
+
+  <script>
+    runTests();
   </script>
 
   <script type="module">
@@ -30,28 +34,11 @@
     }
   </script>
 
-  <!-- 
-  Not yet supported
-  <script type="module" src="loader/anon.js"></script> 
-  -->
-  <script type="module" name="named" src="loader/named.js"></script>
 
   <script>
     setTimeout(function() {
-      test('Named &lt;script type="module"> tag', function(assert) {
-        System.import('named-module').then(function(m) {
-          assert(m.p, 'hi');
-        });
-      });
       test('Anonymous &lt;script type="module"> tag', function(assert) {
         assert(typeof window.anon, 'function');
       });
-      /* test('&lt;script type="module"> with src', function(assert) {
-        assert(typeof window.anon2, 'function');
-      }); */
-      test('&lt;script type="module"> named with src', function(assert) {
-        assert(System.get('named').q,'test');
-      });
     }, 500);
   </script>
-
